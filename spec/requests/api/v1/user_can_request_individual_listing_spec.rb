@@ -35,7 +35,7 @@ RSpec.describe "Listing Request", :type => :request do
 
     get "/api/v1/listings/#{listing.id}.json", params:nil, headers: auth
     result = JSON.parse(response.body, symbolize_names: true)
-
+    
     expect(result[:status]).to eq(401)
     expect(result[:message]).to eq("Access Token Expired.")
   end

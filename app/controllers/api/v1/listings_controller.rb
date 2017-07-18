@@ -1,25 +1,28 @@
 class Api::V1::ListingsController < ApplicationController
   def show
     if request.headers[:Authorization]
-      regex = /Bearer (.+)/
-      jwt = request.headers[:Authorization].match(regex)[1]
+      jwt = get_jwt(request)
       begin
-        decoded_jwt = JWT.decode(
-          jwt, ENV['hmac_secret'], true, { algorithm: 'HS256' }
-        )
-        listing = Listing.find_by(user_id: decoded_jwt.first["user_id"])
-        render json: listing
+        render json: Listing.return_from_jwt(jwt)
       rescue JWT::ExpiredSignature
-        render json: {
-          status: 401,
-          message: "Access Token Expired."
-        }.to_json
+        render json: expired_signature
       end
     else
-      render json: {
-        status: 400,
-        message: "Authorization header not set."
-      }.to_json
+      render json: header_not_set
     end
   end
+
+  private
+    def get_jwt(request)
+      regex = /Bearer (.+)/
+      request.headers[:Authorization].match(regex)[1]
+    end
+
+    def header_not_set
+      {status: 400, message: "Authorization header not set."}
+    end
+
+    def expired_signature
+      {status: 401, message: "Access Token Expired."}
+    end
 end
