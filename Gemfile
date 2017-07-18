@@ -12,6 +12,7 @@ gem 'puma', '~> 3.7'
 # gem 'jbuilder', '~> 2.5'
 gem 'faker'
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'figaro'
 
 
 group :development, :test do
