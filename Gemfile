@@ -13,11 +13,11 @@ gem 'puma', '~> 3.7'
 gem 'faker'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'figaro'
-
+gem 'jwt'
 
 group :development, :test do
   gem 'pry'
-  gem 'pry-state'
+  # gem 'pry-state'
   gem 'rspec-rails', '~> 3.5'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'factory_girl_rails'
