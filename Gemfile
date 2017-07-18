@@ -18,6 +18,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-state'
   gem 'rspec-rails', '~> 3.5'
+  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
 end
 
 group :development do
