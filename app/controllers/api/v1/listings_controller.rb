@@ -7,14 +7,14 @@ class Api::V1::ListingsController < ApplicationController
         decoded_jwt = JWT.decode(
           jwt, ENV['hmac_secret'], true, { algorithm: 'HS256' }
         )
+        listing = Listing.find_by(user_id: decoded_jwt.first["user_id"])
+        render json: listing
       rescue JWT::ExpiredSignature
         render json: {
           status: 401,
           message: "Access Token Expired."
         }.to_json
       end
-      listing = Listing.find_by(user_id: decoded_jwt.first["user_id"])
-      render json: listing
     else
       render json: {
         status: 400,
