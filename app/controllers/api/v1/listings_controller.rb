@@ -13,7 +13,9 @@ class Api::V1::ListingsController < ApplicationController
     if result.user_id
       listing = Listing.create!(listing_params)
       # ::DataSync.perform_async(listing_params)
-      $redis.set("listing", listing.attributes.to_json)
+      # $redis.set("listing", listing.attributes.to_json)
+      attributes = listing.attributes.to_json
+      CreateListingJob.perform_now(attributes)
       binding.pry
       render json: {status: 201, message: "Listing Created"}
     else
