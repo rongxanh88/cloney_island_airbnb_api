@@ -1,0 +1,1 @@
+$redis = Redis::Namespace.new("cloney_island_airbnb_api", :redis => Redis.new)

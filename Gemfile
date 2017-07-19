@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
 gem 'rails', '~> 5.1.2'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
@@ -13,7 +12,9 @@ gem 'faker'
 gem 'figaro'
 gem 'jwt'
 gem 'faraday'
-gem "bunny", ">= 2.7.0"
+gem 'sidekiq'
+gem 'redis'
+gem 'redis-namespace'
 
 group :development, :test do
   gem 'pry'

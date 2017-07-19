@@ -11,7 +11,10 @@ class Api::V1::ListingsController < ApplicationController
   def create
     result = JWTService.receive(request)
     if result.user_id
-      Listing.create!(listing_params)
+      listing = Listing.create!(listing_params)
+      # ::DataSync.perform_async(listing_params)
+      $redis.set("listing", listing.attributes.to_json)
+      binding.pry
       render json: {status: 201, message: "Listing Created"}
     else
       render json: {status: result.status, message: result.message}
