@@ -1,16 +1,16 @@
 class JWTService
   attr_reader :status, :message, :resource, :jwt, :user_id
 
-  def initialize(authorization, requested_resource=nil)
+  def initialize(authorization, requested_resource)
     if authorization
       decode_jwt(authorization)
-      set(requested_resource)
+      set(requested_resource) if user_id
     else
       header_not_set
     end
   end
   
-  def self.receive(request, requested_resource)
+  def self.receive(request, requested_resource=nil)
     JWTService.new(request.headers[:Authorization], requested_resource)
   end
 
@@ -18,7 +18,7 @@ class JWTService
 
     def set(requested_resource)
       case requested_resource
-      when 'listing'
+      when 'get_listing'
         set_listing
       else
         @resource = nil

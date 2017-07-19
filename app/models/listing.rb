@@ -12,11 +12,4 @@ class Listing < ApplicationRecord
   enum pet_type: [:no_pets, :cat, :dog, :cat_and_dog, :misc]
   enum status: [:unlisted, :listed]
   enum cancellation_policy: [:flexible, :moderate, :strict]
-
-  # def self.return_from_jwt(jwt)
-  #   decoded_jwt = JWT.decode(
-  #     jwt, ENV['hmac_secret'], true, { algorithm: 'HS256' }
-  #   )
-  #   find_by(user_id: decoded_jwt.first["user_id"])
-  # end
 end

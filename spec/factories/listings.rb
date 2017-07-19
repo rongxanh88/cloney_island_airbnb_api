@@ -11,12 +11,12 @@ FactoryGirl.define do
     beds 6
     price 25.99
     house_rules 'No smoking'
-    property_type 0
-    bed_type 0
-    pet_type 0
-    room_type 0
-    cancellation_policy 0
-    status 0
+    property_type :house
+    bed_type :king
+    pet_type :no_pets
+    room_type :entire_home
+    cancellation_policy :flexible
+    status :listed
     user_id 1
   end
 end
