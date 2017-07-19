@@ -9,11 +9,8 @@ RSpec.describe "Listing Create Request", :type => :request do
     auth = {Authorization: 'Bearer ' + jwt}
 
     post "/api/v1/listings.json", params:nil, headers: auth
-    result = JSON.parse(response.body, symbolize_names: true)
-
-    expect(response).to have_http_status(200)
-    expect(result[:id]).to eq(listing.id)
-    expect(result[:name]).to eq(listing.name)
+    binding.pry
+    expect(response).to have_http_status(201)
   end
 
   # it "returns a 400 status when not including a authorization header" do

@@ -1,32 +1,37 @@
 class JWTService
-  attr_reader :status, :message, :listing, :jwt
+  attr_reader :status, :message, :resource, :jwt, :user_id
 
-  def initialize(authorization)
+  def initialize(authorization, requested_resource=nil)
     if authorization
-      @jwt = get_jwt(authorization)
-      # begin
-      #   decoded_jwt = JWT.decode(
-      #     jwt, ENV['hmac_secret'], true, { algorithm: 'HS256' }
-      #   )
-      #   @listing = Listing.find_by(user_id: decoded_jwt.first["user_id"])
-      # rescue JWT::ExpiredSignature
-      #   expired_signature
-      # end
-      decode_jwt
+      decode_jwt(authorization)
+      set(requested_resource)
     else
       header_not_set
     end
   end
   
-  def self.response(request)
-    JWTService.new(request.headers[:Authorization])
+  def self.receive(request, requested_resource)
+    JWTService.new(request.headers[:Authorization], requested_resource)
   end
 
   private
 
-    def decode_jwt
+    def set(requested_resource)
+      case requested_resource
+      when 'listing'
+        set_listing
+      else
+        @resource = nil
+      end
+    end
+
+    def decode_jwt(authorization)
       begin
-        get_listing
+        jwt = get_jwt(authorization)
+        @jwt = JWT.decode(
+          jwt, ENV['hmac_secret'], true, { algorithm: 'HS256' }
+        )
+        set_user
       rescue JWT::ExpiredSignature
         expired_signature
       end
@@ -37,11 +42,12 @@ class JWTService
       bearer_token.match(regex)[1]
     end
 
-    def get_listing
-        decoded_jwt = JWT.decode(
-          jwt, ENV['hmac_secret'], true, { algorithm: 'HS256' }
-        )
-        @listing = Listing.find_by(user_id: decoded_jwt.first["user_id"])
+    def set_listing
+      @resource = Listing.find_by(user_id: user_id)
+    end
+
+    def set_user
+      @user_id = @jwt.first["user_id"]
     end
 
     def header_not_set
