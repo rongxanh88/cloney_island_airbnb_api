@@ -1,30 +1,19 @@
 class JWTService
   attr_reader :status, :message, :resource, :jwt, :user_id
 
-  def initialize(authorization, requested_resource)
+  def initialize(authorization)
     if authorization
       decode_jwt(authorization)
-      set(requested_resource) if user_id
     else
       header_not_set
     end
   end
   
-  def self.receive(request, requested_resource=nil)
-    JWTService.new(request.headers[:Authorization], requested_resource)
+  def self.receive(request)
+    JWTService.new(request.headers[:Authorization])
   end
 
   private
-
-    def set(requested_resource)
-      case requested_resource
-      when 'get_listing'
-        set_listing
-      else
-        @resource = nil
-      end
-    end
-
     def decode_jwt(authorization)
       begin
         jwt = get_jwt(authorization)
@@ -40,10 +29,6 @@ class JWTService
     def get_jwt(bearer_token)
       regex = /Bearer (.+)/
       bearer_token.match(regex)[1]
-    end
-
-    def set_listing
-      @resource = Listing.find_by(user_id: user_id)
     end
 
     def set_user

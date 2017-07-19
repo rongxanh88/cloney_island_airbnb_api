@@ -7,7 +7,6 @@ RSpec.describe "Listing Request", :type => :request do
     payload = {user_id: listing.user_id, exp: one_day_exp}
     jwt = JWT.encode payload, ENV['hmac_secret'], 'HS256'
     auth = {Authorization: 'Bearer ' + jwt}
-
     get "/api/v1/listings/#{listing.id}.json", params:nil, headers: auth
     result = JSON.parse(response.body, symbolize_names: true)
 

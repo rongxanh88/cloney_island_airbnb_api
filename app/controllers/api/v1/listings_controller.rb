@@ -1,9 +1,8 @@
 class Api::V1::ListingsController < ApplicationController
   def show
-    requested_action = 'get_listing'
-    result = JWTService.receive(request, requested_action)
-    if result.resource
-      render json: result.resource
+    result = JWTService.receive(request)
+    if result.user_id
+      render json: Listing.find_by(user_id: result.user_id)
     else
       render json: {status: result.status, message: result.message}
     end
