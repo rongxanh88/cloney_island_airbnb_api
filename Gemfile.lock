@@ -32,11 +32,6 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_model_serializers (0.10.6)
-      actionpack (>= 4.1, < 6)
-      activemodel (>= 4.1, < 6)
-      case_transform (>= 0.2)
-      jsonapi-renderer (>= 0.1.1.beta1, < 0.2)
     activejob (5.1.2)
       activesupport (= 5.1.2)
       globalid (>= 0.3.6)
@@ -51,10 +46,11 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    amq-protocol (2.2.0)
     arel (8.0.0)
     builder (3.2.3)
-    case_transform (0.2)
-      activesupport
+    bunny (2.7.0)
+      amq-protocol (>= 2.2.0)
     coderay (1.1.1)
     concurrent-ruby (1.0.5)
     diff-lcs (1.3)
@@ -74,7 +70,6 @@ GEM
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     i18n (0.8.6)
-    jsonapi-renderer (0.1.3)
     jwt (1.5.6)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -173,7 +168,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers (~> 0.10.0)
+  bunny (>= 2.7.0)
   factory_girl_rails
   faker
   faraday

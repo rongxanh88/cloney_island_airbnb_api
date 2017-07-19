@@ -9,12 +9,11 @@ end
 gem 'rails', '~> 5.1.2'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
-# gem 'jbuilder', '~> 2.5'
 gem 'faker'
-gem 'active_model_serializers', '~> 0.10.0'
 gem 'figaro'
 gem 'jwt'
 gem 'faraday'
+gem "bunny", ">= 2.7.0"
 
 group :development, :test do
   gem 'pry'
