@@ -12,11 +12,8 @@ class Api::V1::ListingsController < ApplicationController
     result = JWTService.receive(request)
     if result.user_id
       listing = Listing.create!(listing_params)
-      # ::DataSync.perform_async(listing_params)
-      # $redis.set("listing", listing.attributes.to_json)
       attributes = listing.attributes.to_json
       CreateListingJob.perform_now(attributes)
-      binding.pry
       render json: {status: 201, message: "Listing Created"}
     else
       render json: {status: result.status, message: result.message}
@@ -27,6 +24,7 @@ class Api::V1::ListingsController < ApplicationController
     result = JWTService.receive(request)
     if result.user_id
       Listing.destroy(params[:id])
+      ListingCleanupJob.perform_now(params[:id])
       render json: {status: 202, message: "Listing Destroyed"}
     else
       render json: {status: result.status, message: result.message}
