@@ -2,7 +2,6 @@ require "rails_helper"
 
 RSpec.describe "Listing Request", :type => :request do
   it "returns a listing json for that user" do
-    skip
     listing = create(:listing, user_id: 56)
     one_day_exp = Time.now.to_i + 86400
     payload = {user_id: listing.user_id, exp: one_day_exp}
@@ -17,7 +16,6 @@ RSpec.describe "Listing Request", :type => :request do
   end
 
   it "returns a 400 status when not including a authorization header" do
-    skip
     listing = create(:listing, user_id: 99)
 
     get "/api/v1/listings/#{listing.id}.json"
@@ -28,7 +26,6 @@ RSpec.describe "Listing Request", :type => :request do
   end
 
   it "returns a 401 status when the token is expired" do
-    skip
     listing = create(:listing, user_id: 1)
     expires_a_minute_ago = Time.now.to_i - 60
     payload = {user_id: listing.user_id, exp: expires_a_minute_ago}

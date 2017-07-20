@@ -7,6 +7,7 @@ RSpec.describe "Listing Create Request", :type => :request do
     payload = {user_id: 1, exp: one_day_exp}
     jwt = JWT.encode payload, ENV['hmac_secret'], 'HS256'
     auth = {Authorization: 'Bearer ' + jwt}
+    allow(CreateListingJob).to receive(:perform_now).and_return(true)
 
     post "/api/v1/listings.json", params: {listing: attributes}, headers: auth
     result = JSON.parse(response.body, symbolize_names: true)
@@ -15,7 +16,6 @@ RSpec.describe "Listing Create Request", :type => :request do
   end
 
   it "returns a 400 status when not including a authorization header" do
-    skip
     attributes = attributes_for(:listing)
 
     post "/api/v1/listings.json", params: {listing: attributes}
@@ -25,7 +25,6 @@ RSpec.describe "Listing Create Request", :type => :request do
   end
 
   it "returns a 401 status when the token is expired" do
-    skip
     attributes = attributes_for(:listing)
     one_day_exp = Time.now.to_i - 1
     payload = {user_id: 1, exp: one_day_exp}

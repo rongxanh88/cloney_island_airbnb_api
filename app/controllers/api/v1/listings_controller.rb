@@ -2,7 +2,7 @@ class Api::V1::ListingsController < ApplicationController
   def show
     result = JWTService.receive(request)
     if result.user_id
-      render json: Listing.find_by(user_id: result.user_id)
+      render json: Listing.find_by(user_id: result.user_id, id: params[:id])
     else
       render json: {status: result.status, message: result.message}
     end
@@ -11,9 +11,7 @@ class Api::V1::ListingsController < ApplicationController
   def create
     result = JWTService.receive(request)
     if result.user_id
-      listing = Listing.create!(listing_params)
-      attributes = listing.attributes.to_json
-      CreateListingJob.perform_now(attributes)
+      Listing.create_listing_and_submit_job(listing_params)
       render json: {status: 201, message: "Listing Created"}
     else
       render json: {status: result.status, message: result.message}
@@ -23,9 +21,8 @@ class Api::V1::ListingsController < ApplicationController
   def destroy
     result = JWTService.receive(request)
     if result.user_id
-      Listing.destroy(params[:id])
-      ListingCleanupJob.perform_now(params[:id])
-      render json: {status: 202, message: "Listing Destroyed"}
+      Listing.delete_listing_and_submit_job(result, params[:id])
+      render json: {status: result.status, message: result.message}
     else
       render json: {status: result.status, message: result.message}
     end

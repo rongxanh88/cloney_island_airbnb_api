@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "bathrooms"
     t.integer "bedrooms"
     t.integer "beds"
-    t.float "price"
+    t.integer "price"
     t.text "house_rules"
     t.integer "property_type"
     t.integer "bed_type"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
     t.integer "cancellation_policy", default: 0
     t.string "address"
+    t.float "latitude"
+    t.float "longitude"
     t.index ["user_id"], name: "index_listings_on_user_id"
   end
 

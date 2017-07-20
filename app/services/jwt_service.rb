@@ -1,5 +1,6 @@
 class JWTService
-  attr_reader :status, :message, :resource, :jwt, :user_id
+  attr_reader :resource, :jwt, :user_id
+  attr_accessor :status, :message
 
   def initialize(authorization)
     if authorization
